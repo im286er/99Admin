@@ -1,20 +1,3 @@
-/*
-Navicat MySQL Data Transfer
-
-Source Server         : data.99php.cn
-Source Server Version : 50719
-Source Host           : data.99php.cn:3306
-Source Database       : blog
-
-Target Server Type    : MYSQL
-Target Server Version : 50719
-File Encoding         : 65001
-
-Date: 2018-08-03 17:52:57
-*/
-
-SET FOREIGN_KEY_CHECKS=0;
-
 -- ----------------------------
 -- Table structure for system_auth
 -- ----------------------------
@@ -27,7 +10,7 @@ CREATE TABLE `system_auth` (
   `remark` varchar(255) DEFAULT NULL COMMENT '备注说明',
   `create_by` bigint(11) unsigned DEFAULT '0' COMMENT '创建人',
   `create_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
-  `update_at` timestamp NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP,
+  `update_at` timestamp NULL DEFAULT NULL,
   `update_by` bigint(20) DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `index_system_auth_title` (`title`) USING BTREE,
@@ -37,7 +20,7 @@ CREATE TABLE `system_auth` (
 -- ----------------------------
 -- Records of system_auth
 -- ----------------------------
-INSERT INTO `system_auth` VALUES ('1', '管理员', '1', '3', '测试管理员', '0', '2018-03-17 15:59:46', '2018-08-03 17:50:57', null);
+INSERT INTO `system_auth` VALUES ('1', '管理员', '1', '3', '测试管理员', '0', '2018-03-17 15:59:46', '2018-08-07 10:26:57', null);
 INSERT INTO `system_auth` VALUES ('4', '超级管理员', '1', '1', '不受权限控制', '0', '2018-01-23 13:28:14', null, null);
 
 -- ----------------------------
@@ -51,7 +34,7 @@ CREATE TABLE `system_auth_node` (
   PRIMARY KEY (`id`),
   KEY `index_system_auth_auth` (`auth`) USING BTREE,
   KEY `index_system_auth_node` (`node`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=226 DEFAULT CHARSET=utf8 COMMENT='角色与节点关系表';
+) ENGINE=InnoDB AUTO_INCREMENT=238 DEFAULT CHARSET=utf8 COMMENT='角色与节点关系表';
 
 -- ----------------------------
 -- Records of system_auth_node
@@ -63,12 +46,6 @@ INSERT INTO `system_auth_node` VALUES ('132', '6', '1050');
 INSERT INTO `system_auth_node` VALUES ('133', '6', '1051');
 INSERT INTO `system_auth_node` VALUES ('134', '6', '1053');
 INSERT INTO `system_auth_node` VALUES ('135', '6', '1059');
-INSERT INTO `system_auth_node` VALUES ('196', '1', '1059');
-INSERT INTO `system_auth_node` VALUES ('197', '1', '1063');
-INSERT INTO `system_auth_node` VALUES ('198', '1', '1109');
-INSERT INTO `system_auth_node` VALUES ('199', '1', '1065');
-INSERT INTO `system_auth_node` VALUES ('200', '1', '1066');
-INSERT INTO `system_auth_node` VALUES ('201', '1', '1114');
 INSERT INTO `system_auth_node` VALUES ('202', '4', '1042');
 INSERT INTO `system_auth_node` VALUES ('203', '4', '1046');
 INSERT INTO `system_auth_node` VALUES ('204', '4', '1044');
@@ -93,6 +70,18 @@ INSERT INTO `system_auth_node` VALUES ('222', '4', '1074');
 INSERT INTO `system_auth_node` VALUES ('223', '4', '1070');
 INSERT INTO `system_auth_node` VALUES ('224', '4', '1075');
 INSERT INTO `system_auth_node` VALUES ('225', '4', '1114');
+INSERT INTO `system_auth_node` VALUES ('226', '1', '1059');
+INSERT INTO `system_auth_node` VALUES ('227', '1', '1063');
+INSERT INTO `system_auth_node` VALUES ('228', '1', '1109');
+INSERT INTO `system_auth_node` VALUES ('229', '1', '1065');
+INSERT INTO `system_auth_node` VALUES ('230', '1', '1066');
+INSERT INTO `system_auth_node` VALUES ('231', '1', '1071');
+INSERT INTO `system_auth_node` VALUES ('232', '1', '1073');
+INSERT INTO `system_auth_node` VALUES ('233', '1', '1072');
+INSERT INTO `system_auth_node` VALUES ('234', '1', '1074');
+INSERT INTO `system_auth_node` VALUES ('235', '1', '1070');
+INSERT INTO `system_auth_node` VALUES ('236', '1', '1075');
+INSERT INTO `system_auth_node` VALUES ('237', '1', '1114');
 
 -- ----------------------------
 -- Table structure for system_config
@@ -202,7 +191,7 @@ CREATE TABLE `system_node` (
   `update_by` bigint(20) DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `index_system_node_node` (`node`)
-) ENGINE=InnoDB AUTO_INCREMENT=1115 DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC COMMENT='系统节点表';
+) ENGINE=InnoDB AUTO_INCREMENT=1117 DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC COMMENT='系统节点表';
 
 -- ----------------------------
 -- Records of system_node
@@ -247,6 +236,8 @@ INSERT INTO `system_node` VALUES ('1085', 'common/admin_controller', null, '2', 
 INSERT INTO `system_node` VALUES ('1109', 'admin/system/clear_node', '清除节点', '3', '1', '2018-07-26 15:29:55', null, null, null);
 INSERT INTO `system_node` VALUES ('1113', 'admin/config', '系统配置管理', '2', '1', '2018-07-31 01:00:16', null, null, null);
 INSERT INTO `system_node` VALUES ('1114', 'admin/config/index', '系统配置列表', '3', '1', '2018-07-31 01:00:16', null, null, null);
+INSERT INTO `system_node` VALUES ('1115', 'admin/test', null, '2', '0', '2018-08-06 22:27:17', null, null, null);
+INSERT INTO `system_node` VALUES ('1116', 'admin/test/index', null, '3', '0', '2018-08-06 22:27:17', null, null, null);
 
 -- ----------------------------
 -- Table structure for system_user
@@ -272,14 +263,3 @@ CREATE TABLE `system_user` (
   PRIMARY KEY (`id`),
   UNIQUE KEY `index_system_user_username` (`username`) USING BTREE
 ) ENGINE=InnoDB AUTO_INCREMENT=10016 DEFAULT CHARSET=utf8 COMMENT='系统用户表';
-
--- ----------------------------
--- Records of system_user
--- ----------------------------
-INSERT INTO `system_user` VALUES ('1', '[\"0\"]', 'admin', 'ed696eb5bba1f7460585cc6975e6cf9bf24903dd', '22222222', 'zhongshaofa@qq.com', '13617343800', '', '22499', '2018-04-17 20:58:27', '1', '0', '0', '2015-11-13 15:14:22', null, '2018-07-18 01:31:58');
-INSERT INTO `system_user` VALUES ('10005', '[]', 'admin4', '4aa9010f4f4b6c7935575b9b42fbb8871248f971', null, '2@qq.com', '15521045862', '', '0', null, '1', '0', '0', '2018-07-15 04:40:16', null, '2018-07-18 00:47:50');
-INSERT INTO `system_user` VALUES ('10006', '[]', 'admin5', '4aa9010f4f4b6c7935575b9b42fbb8871248f971', null, '2@qq.com', '15521045862', '', '0', null, '1', '0', '0', '2018-07-15 04:51:58', null, '2018-07-18 00:47:50');
-INSERT INTO `system_user` VALUES ('10007', '[]', 'admin7', '4aa9010f4f4b6c7935575b9b42fbb8871248f971', null, '2@qq.com', '13659797497', '', '0', null, '0', '1', '0', '2018-07-15 04:52:57', null, '2018-07-18 01:01:18');
-INSERT INTO `system_user` VALUES ('10009', '[]', 'ceshi2', '4aa9010f4f4b6c7935575b9b42fbb8871248f971', null, '21@qq.com', '15521045863', '', '0', null, '1', '1', '0', '2018-07-16 10:36:52', null, '2018-07-18 00:47:52');
-INSERT INTO `system_user` VALUES ('10011', '[]', 'ceshi7', '4aa9010f4f4b6c7935575b9b42fbb8871248f971', null, '26@qq.com', '13659797491', '', '0', null, '1', '1', '0', '2018-07-16 10:43:42', null, '2018-07-18 00:47:54');
-INSERT INTO `system_user` VALUES ('10015', '[\"1\"]', 'zhongshaofa', '4aa9010f4f4b6c7935575b9b42fbb8871248f971', '', '', '15521045866', '', '0', null, '1', '0', null, '2018-07-21 04:19:12', null, null);

@@ -1,13 +1,15 @@
 <?php
 
-/// +----------------------------------------------------------------------
-// | 99PHP [ WE CAN DO IT JUST THINK ]
 // +----------------------------------------------------------------------
-// | Copyright (c) 2018~2020 https://www.99php.cn All rights reserved.
+// | Think.Admin
 // +----------------------------------------------------------------------
-// | Licensed ( http://www.apache.org/licenses/LICENSE-2.0 )
+// | 版权所有 2014~2017 广州楚才信息科技有限公司 [ http://www.cuci.cc ]
 // +----------------------------------------------------------------------
-// | Author: Mr.Chung <chung@99php.cn >
+// | 官方网站: http://think.ctolog.com
+// +----------------------------------------------------------------------
+// | 开源协议 ( https://mit-license.org )
+// +----------------------------------------------------------------------
+// | github开源项目：https://github.com/zoujingli/Think.Admin
 // +----------------------------------------------------------------------
 
 namespace app\admin\controller\api;
@@ -18,7 +20,7 @@ use app\common\controller\AdminController;
 class Node extends AdminController {
 
     /**
-     * 获取对应角色的节点数据11
+     * 获取对应角色的节点数据
      * @param $id
      * @return \think\response\Json
      * @throws \think\db\exception\DataNotFoundException

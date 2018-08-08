@@ -81,9 +81,6 @@
         layer = parent.layer === undefined ? layui.layer : top.layer,
             $ = layui.jquery;
 
-        //提示语
-        layer.msg('默认账号：admin，密码：123456', {icon: 0, time: 5000});
-
         //提交
         form.on('submit(LAY-user-login-submit)', function (data) {
             //请求登入接口

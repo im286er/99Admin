@@ -1,5 +1,4 @@
 <?php
-
 /// +----------------------------------------------------------------------
 // | 99PHP [ WE CAN DO IT JUST THINK ]
 // +----------------------------------------------------------------------
@@ -28,7 +27,7 @@ class Index extends AdminController {
             return model('menu')->getHome();
         });
         $basic_data = [
-            'title' => '久久PHP后台管理',
+            'title' => '99Admin后台管理',
             'nav'   => model('menu')->getNav(),
             'home'  => Cache::get('Home'),
             'data'  => '',

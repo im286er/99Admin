@@ -165,3 +165,180 @@ if (!function_exists('clear_basic')) {
         Cache::clear('basic');
     }
 }
+
+if (!function_exists('get_ip')) {
+
+    /**
+     * 获取用户ip地址
+     * @return array|false|string
+     */
+    function get_ip() {
+        $ip = false;
+        if (!empty($_SERVER["HTTP_CLIENT_IP"])) {
+            $ip = $_SERVER["HTTP_CLIENT_IP"];
+        }
+        if (!empty($_SERVER['HTTP_X_FORWARDED_FOR'])) {
+            $ips = explode(", ", $_SERVER['HTTP_X_FORWARDED_FOR']);
+            if ($ip) {
+                array_unshift($ips, $ip);
+                $ip = false;
+            }
+            for ($i = 0; $i < count($ips); $i++) {
+                if (!eregi("^(10│172.16│192.168).", $ips[$i])) {
+                    $ip = $ips[$i];
+                    break;
+                }
+            }
+        }
+        return ($ip ? $ip : $_SERVER['REMOTE_ADDR']);
+    }
+}
+
+if (!function_exists('get_location')) {
+
+    /**
+     * 根据ip获取地理位置
+     * @param string $ip
+     * @return mixed
+     */
+    function get_location($ip = '') {
+        empty($ip) && $ip = get_ip();
+        $url = "http://ip.taobao.com/service/getIpInfo.php?ip={$ip}";
+        $ret = file_get_contents($url);
+        $arr = json_decode($ret, true);
+        return $arr['data'];
+    }
+}
+
+if (!function_exists('install_substring')) {
+
+    /**
+     * 格式化安装配置信息
+     * @param     $str
+     * @param     $lenth
+     * @param int $start
+     * @return string
+     */
+    function install_substring($str, $lenth, $start = 0) {
+        $len = strlen($str);
+        $r = [];
+        $n = 0;
+        $m = 0;
+
+        for ($i = 0; $i < $len; $i++) {
+            $x = substr($str, $i, 1);
+            $a = base_convert(ord($x), 10, 2);
+            $a = substr('00000000 ' . $a, -8);
+
+            if ($n < $start) {
+                if (substr($a, 0, 1) == 0) {
+                } elseif (substr($a, 0, 3) == 110) {
+                    $i += 1;
+                } elseif (substr($a, 0, 4) == 1110) {
+                    $i += 2;
+                }
+                $n++;
+            } else {
+                if (substr($a, 0, 1) == 0) {
+                    $r[] = substr($str, $i, 1);
+                } elseif (substr($a, 0, 3) == 110) {
+                    $r[] = substr($str, $i, 2);
+                    $i += 1;
+                } elseif (substr($a, 0, 4) == 1110) {
+                    $r[] = substr($str, $i, 3);
+                    $i += 2;
+                } else {
+                    $r[] = ' ';
+                }
+                if (++$m >= $lenth) {
+                    break;
+                }
+            }
+        }
+        return join('', $r);
+    }
+}
+
+if (!function_exists('parse_sql')) {
+
+    /**
+     * 格式化导入的sql语句
+     * @param string $sql
+     * @param int    $limit
+     * @return array|string
+     */
+    function parse_sql($sql = '', $limit = 0) {
+        if ($sql != '') {
+            // 纯sql内容
+            $pure_sql = [];
+
+            // 多行注释标记
+            $comment = false;
+
+            // 按行分割，兼容多个平台
+            $sql = str_replace(["\r\n", "\r"], "\n", $sql);
+            $sql = explode("\n", trim($sql));
+
+            // 循环处理每一行
+            foreach ($sql as $key => $line) {
+                // 跳过空行
+                if ($line == '') {
+                    continue;
+                }
+
+                // 跳过以#或者--开头的单行注释
+                if (preg_match("/^(#|--)/", $line)) {
+                    continue;
+                }
+
+                // 跳过以/**/包裹起来的单行注释
+                if (preg_match("/^\/\*(.*?)\*\//", $line)) {
+                    continue;
+                }
+
+                // 多行注释开始
+                if (substr($line, 0, 2) == '/*') {
+                    $comment = true;
+                    continue;
+                }
+
+                // 多行注释结束
+                if (substr($line, -2) == '*/') {
+                    $comment = false;
+                    continue;
+                }
+
+                // 多行注释没有结束，继续跳过
+                if ($comment) {
+                    continue;
+                }
+
+                // sql语句
+                array_push($pure_sql, $line);
+            }
+
+            // 只返回一条语句
+            if ($limit == 1) {
+                return implode($pure_sql, "");
+            }
+
+            // 以数组形式返回sql语句
+            $pure_sql = implode($pure_sql, "\n");
+            $pure_sql = explode(";\n", $pure_sql);
+            return $pure_sql;
+        } else {
+            return $limit == 1 ? '' : [];
+        }
+    }
+}
+
+if (!function_exists('curl')) {
+
+    /**
+     * 模拟请求
+     * @return \app\common\service\CurlService
+     */
+    function curl() {
+        return new \tool\Curl();
+    }
+}

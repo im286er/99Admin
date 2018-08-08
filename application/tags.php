@@ -8,7 +8,7 @@
 // +----------------------------------------------------------------------
 // | Author: Mr.Chung <chung@99php.cn >
 // +----------------------------------------------------------------------
-use app\common\service\AuthService;
+use think\exception\HttpResponseException;
 
 use think\facade\Cache;
 
@@ -19,15 +19,22 @@ return [
     // 应用开始
     'app_begin'    => function () {
 
-        //缓存系统配置信息
-        Cache::tag('basic')->remember('SysInfo', function () {
-            $SysInfo = new \app\admin\model\Config;
-            return $SysInfo->getBasicConfig();
-        });
+        $module = app('request')->module();
 
-        //渲染到视图层
-        app('view')->init(config('template.'))->assign(['SysInfo' => Cache::get('SysInfo')]);
+        //判断应用是否已安装
+        if (file_exists(Env::get('config_path') . 'lock\install.lock') == false && $module != 'install') {
+            throw new HttpResponseException(redirect(url('@install')));
+        }
 
+        if ($module != 'install') {
+            //缓存系统配置信息
+            Cache::tag('basic')->remember('SysInfo', function () {
+                $SysInfo = new \app\admin\model\Config;
+                return $SysInfo->getBasicConfig();
+            });
+            //渲染到视图层
+            app('view')->init(config('template.'))->assign(['SysInfo' => Cache::get('SysInfo')]);
+        }
     },
     // 模块初始化
     'module_init'  => [],
