@@ -22,10 +22,10 @@ return [
         $module = app('request')->module();
 
         //判断应用是否已安装
-        if (file_exists(Env::get('config_path') . 'lock\install.lock') == false && $module != 'install') {
+        if (file_exists(Env::get('config_path') . 'lock/install.lock') == false && $module != 'install') {
             throw new HttpResponseException(redirect(url('@install')));
         }
-
+      
         if ($module != 'install') {
             //缓存系统配置信息
             Cache::tag('basic')->remember('SysInfo', function () {

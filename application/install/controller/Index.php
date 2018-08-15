@@ -31,7 +31,7 @@ class Index extends Controller {
     public function index($step = 0) {
 
         //判断是否已安装
-        if (file_exists(Env::get('config_path') . 'lock\install.lock')) return msg_error('程序已安装，如需重新安装，请先删除 config/lock/install.lock 文件', url('@admin'),5);
+        if (file_exists(Env::get('config_path') . 'lock/install.lock')) return msg_error('程序已安装，如需重新安装，请先删除 config/lock/install.lock 文件', url('@admin'), 5);
 
         switch ($step) {
             case 2:
@@ -247,7 +247,7 @@ INFO;
             ['dir', '../config', '读写', '读写', 'ok'],
             ['dir', '../logs', '读写', '读写', 'ok'],
             ['dir', '../runtime', '读写', '读写', 'ok'],
-            ['dir', '../upload', '读写', '读写', 'ok'],
+//            ['dir', '../upload', '读写', '读写', 'ok'],
             ['dir', '../public', '读写', '读写', 'ok'],
 
         ];
